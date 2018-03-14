@@ -17,6 +17,8 @@ setaudit:	$(OBJS)
 install:	setaudit
 		mkdir -p $(PREFIX)/bin/
 		install -m 0555 setaudit $(PREFIX)/bin/setaudit
+		mkdir -p $(PREFIX)/man/man1/
+		install -m 0444 setaudit.1 $(PREFIX)/man/man1
 
 clean:
 	rm -fr *.o setaudit
