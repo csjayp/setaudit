@@ -48,7 +48,7 @@ usage(char *prog)
 {
 
 	(void) fprintf(stderr,
-	    "usage: %s [-a auid] [-m mask] [-s source] [-p port] comand ...\n",
+	    "usage: %s [-a auid] [-m mask] [-s source] [-p port] command ...\n",
 	    prog);
 	exit(1);
 }
