@@ -1,5 +1,5 @@
 CC?=	cc
-CFLAGS=	-Wall
+CFLAGS+=	-Wall
 TARGET=	setaudit
 OBJS=	setaudit.o
 
