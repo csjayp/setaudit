@@ -1,15 +1,16 @@
 # setaudit
-Tool to specify audit configurations on a process
+
+Tool to specify audit configurations on a process.
 
 ## Usage
 
 ```shell
-usage: ./setaudit [-a auid] [-m mask] [-s source] [-p port] command ...
+setaudit [-a auid] [-m mask] [-s source] [-p port] command ...
 ```
 ## Example
 
-Enable all exe related audit events performed by `command` and it's child processes
+Enable all exe related audit events performed by a `command` and its child processes:
 
 ```shell
-sudo ./setaudit -m ex command
+setaudit -m ex command
 ```
