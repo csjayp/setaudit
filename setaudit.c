@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2008 Christian S.J. Peron
+ * Copyright (c) 2018 Christian S.J. Peron
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ usage(char *prog)
 {
 
 	(void) fprintf(stderr,
-	    "usage: %s [-a auid] [-m mask] [-s source] [-p port] command ...\n",
+	    "usage: %s [-46] [-a auid] [-m mask] [-s source] [-p port] command ...\n",
 	    prog);
 	exit(1);
 }
@@ -58,6 +58,7 @@ main(int argc, char *argv [])
 {
 	struct sockaddr_in6 *sin6;
 	struct sockaddr_in *sin;
+	struct addrinfo hints;
 	auditinfo_addr_t aia;
 	struct addrinfo *res;
 	struct passwd *pwd;
@@ -66,9 +67,17 @@ main(int argc, char *argv [])
 
 	prog = argv[0];
 	bzero(&aia, sizeof(aia));
+	bzero(&hints, sizeof(hints));
 	aia.ai_termid.at_type = AU_IPv4;
-	while ((ch = getopt(argc, argv, "a:m:s:p:")) != -1)
+	hints.ai_family = PF_UNSPEC;
+	while ((ch = getopt(argc, argv, "46a:m:s:p:")) != -1)
 		switch (ch) {
+		case '4':
+			hints.ai_family = PF_INET;
+			break;
+		case '6':
+			hints.ai_family = PF_INET6;
+			break;
 		case 'a':
 			aflag = optarg;
 			break;
@@ -103,7 +112,7 @@ main(int argc, char *argv [])
 			err(1, "getauditflagsbin");
 	}
 	if (sflag) {
-		error = getaddrinfo(sflag, NULL, NULL, &res);
+		error = getaddrinfo(sflag, NULL, &hints, &res);
 		if (error)
 			errx(1, "%s", gai_strerror(error));
 		switch (res->ai_family) {
@@ -123,8 +132,9 @@ main(int argc, char *argv [])
 			break;
 		}
 	}
-	if (setaudit_addr(&aia, sizeof(aia)) < 0)
+	if (setaudit_addr(&aia, sizeof(aia)) < 0) {
 		err(1, "setaudit_addr");
+	}
 	(void) execvp(*argv, argv);
 	err(1, "%s", *argv);
 }
