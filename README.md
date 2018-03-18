@@ -5,7 +5,7 @@ Tool to specify audit configurations on a process.
 ## Usage
 
 ```shell
-setaudit [-a auid] [-m mask] [-s source] [-p port] command ...
+setaudit [-46] [-a auid] [-m mask] [-s source] [-p port] command ...
 ```
 ## Example
 
